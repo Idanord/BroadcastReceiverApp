@@ -14,14 +14,16 @@ public class ExampleBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        //check to see if boot was successful
-        if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())){
-            Toast.makeText(context, "Boot completed", Toast.LENGTH_SHORT).show();
-        }
-
         //check to see if the connectivity changed
         if(ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())){
-            Toast.makeText(context, "Connectivity changed", Toast.LENGTH_SHORT).show();
+            boolean noConnectivity = intent.getBooleanExtra(
+                    ConnectivityManager.EXTRA_NO_CONNECTIVITY, false
+            );
+            if(noConnectivity) {
+                Toast.makeText(context, "Disconnected", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(context, "Connected", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
